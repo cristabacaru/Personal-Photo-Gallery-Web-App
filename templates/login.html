@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+<p>This is the Login page.</p>
+
+<script>
+    // Get the error message from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMessage = urlParams.get('error_message');
+
+    // Display the error message if it exists
+    if (errorMessage) {
+        window.alert(errorMessage);
+    }
+</script>
+
+<!-- HTML form for user authentication -->
+<form action="{{ url_for('login') }}" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <input type="submit" value="Login">
+</form>
+
+{% endblock %}

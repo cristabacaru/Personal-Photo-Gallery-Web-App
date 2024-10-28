@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Photo Gallery{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <!-- Your header content here -->
+        <h1 class="title">Photo Gallery</h1>
+    </header>
+
+    <button id="menu-button">&#9776; Menu</button>
+    <nav id="menu">
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('upload') }}">Upload</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Logout button -->
+    {% if current_user.is_authenticated %}
+    <form action="{{ url_for('logout') }}" method="post" id="logout-form">
+        <button type="submit" id="logout-button">Logout</button>
+    </form>
+    {% endif %}
+
+    <script src="../static/js/sliding_menu.js"></script>
+</body>
+</html>

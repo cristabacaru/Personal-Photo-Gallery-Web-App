@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Welcome to the Photo Gallery</h1>
+
+<!-- Edit button -->
+{% if current_user.is_authenticated %}
+<div class="text-center mb-4">
+    <button class="btn btn-primary" id="edit-button">Edit</button>
+</div>
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Uploaded Pictures</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link to your custom style.css file -->
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+    <!-- Lightbox CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Lightbox JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <style>
+        .thumbnail {
+            width: 180px; 
+            height: 220px;
+            overflow: hidden;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .add-icon {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        .add-icon i {
+            font-size: 36px;
+            color: #e40b7f;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        <div class="container">
+            {% for category in categories %}
+            <h2 class="text-center">{{ category }}</h2>
+            <div class="row justify-content-center">
+                {% for image in images[category] %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <a href="{{ url_for('uploaded_file', filename='../uploads/' + category + '/' + image) }}" data-lightbox="gallery">
+                        <div class="thumbnail">
+                            <img src="{{ url_for('uploaded_file', filename='../uploads/' + category + '/' + image) }}" alt="{{ image }}" class="img-fluid">
+                        </div>
+                    </a>
+                    <!-- Delete button -->
+                    {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('delete_image', category=category, image=image) }}" method="post" class="delete-form" style="display: none;">
+                        <button type="submit" class="btn btn-danger delete-button">Delete</button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% if current_user.is_authenticated %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 add-icon" style="display: none;">
+                    <a href="{{ url_for('upload') }}">
+                        <i class="fas fa-plus-circle"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+
+<!-- JavaScript to toggle delete buttons and add icons -->
+<script>
+    $(document).ready(function() {
+        $('#edit-button').click(function() {
+            $('.delete-form').toggle();
+            $('.add-icon').toggle(); // Toggle add icon visibility
+        });
+    });
+</script>
+
+<script>
+    {% if error_message %}
+    // Display alert box if error message exists
+    window.alert("{{ error_message }}");
+    {% endif %}
+</script>
+{% endblock %}

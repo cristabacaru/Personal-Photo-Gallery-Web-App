@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Upload{% endblock %}
+{% block content %}
+<h1>Upload</h1>
+<p>This is the Upload page.</p>
+<form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+    <input type="file" name="image" required><br><br>
+    <input type="text" name="name" placeholder="Name (optional)"><br><br>
+    <select name="category" required>
+        <option value="" disabled selected>Select Category</option>
+        <option value="category1">Category 1</option>
+        <option value="category2">Category 2</option>
+    </select><br><br>
+    <input type="submit" value="Upload">
+</form>
+{% endblock %}

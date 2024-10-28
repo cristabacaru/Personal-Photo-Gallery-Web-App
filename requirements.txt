@@ -1,0 +1,6 @@
+Flask
+Flask-Login
+Flask-Uploads
+Pillow
+Werkzeug
+Flask-SQLAlchemy
